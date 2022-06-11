@@ -12,8 +12,12 @@ set( SDL_SHARED OFF CACHE BOOL "" FORCE )
 add_subdirectory(lib/SDL)
 
 # Adding LibCURL
-set(OPENSSL_USE_STATIC_LIBS TRUE)
-find_package(OpenSSL REQUIRED)
+
+# set(OPENSSL_USE_STATIC_LIBS TRUE)
+# find_package(OpenSSL REQUIRED)
+
+set( OPENSSL_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/lib/openssl/include)
+set( OPENSSL_CRYPTO_LIBRARY ${CMAKE_SOURCE_DIR}/lib/openssl/crypto)
 
 set( BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE )
 set( CURL_USE_OPENSSL ON CACHE BOOL "" FORCE )
@@ -27,7 +31,7 @@ add_executable(launchy ${SOURCESS} ${INCLUDES})
 
 target_link_libraries( launchy SDL2main SDL2-static libcurl)
 target_link_libraries( launchy ${CURL_LIBRARIES} )
-target_link_libraries( launchy OpenSSL::Crypto)
+# target_link_libraries( launchy OpenSSL::Crypto)
 
 
 set_property(TARGET launchy PROPERTY VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/build/$<CONFIG>/")
