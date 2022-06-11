@@ -2,13 +2,6 @@ cmake_minimum_required(VERSION 3.1)
 set(CMAKE_CXX_STANDARD 11)
 project(launchy CXX)
 
-if (CMAKE_BUILD_TYPE EQUAL "DEBUG")
-    message(">>>>>>>>>>>>>>>>>>>>>>>>> debug mode")
-else ()
-    message(">>>>>>>>>>>>>>>>>>>>>>>>> ")
-    message(CMAKE_BUILD_TYPE)
-endif()
-
 add_subdirectory(include)
 add_subdirectory(src)
 add_subdirectory(tests)
