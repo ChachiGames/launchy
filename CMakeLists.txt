@@ -12,7 +12,6 @@ set( SDL_SHARED OFF CACHE BOOL "" FORCE )
 add_subdirectory(lib/SDL)
 
 # Adding LibCURL
-
 set(OPENSSL_USE_STATIC_LIBS TRUE)
 find_package(OpenSSL REQUIRED)
 
@@ -31,3 +30,9 @@ target_link_libraries( launchy ${CURL_LIBRARIES} )
 
 
 set_property(TARGET launchy PROPERTY VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/build/$<CONFIG>/")
+
+add_custom_command(
+        TARGET launchy POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy
+                ${CMAKE_SOURCE_DIR}/dependencies/cacert.pem
+                ${CMAKE_SOURCE_DIR}/build/$<CONFIG>/cacert.pem)
