@@ -1,10 +1,17 @@
-#include <iostream>
-#include <functional>
 #include <SDL.h>
 #include <curl/curl.h>
 
+#include <iostream>
+#include <functional>
+
+#include <string>
+
+#include "config.h"
+
 int main(int argc, char** argv)
 {
+    std::cout << "[" << PROJECT_NAME <<"] - Version: {"<< PROJECT_VER<<"}"<<"\n";
+
     // Declaration
     SDL_Window* window;
     SDL_Renderer* renderer;

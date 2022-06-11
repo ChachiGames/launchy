@@ -1,8 +1,9 @@
 cmake_minimum_required(VERSION 3.1)
-set(CMAKE_CXX_STANDARD 11)
-project(launchy CXX)
+set(CMAKE_CXX_STANDARD 17)
+project(launchy VERSION "0.0.0" )
 
-add_subdirectory(include)
+configure_file(${CMAKE_SOURCE_DIR}/config.h.in ${CMAKE_SOURCE_DIR}/src/config.h)
+
 add_subdirectory(src)
 add_subdirectory(tests)
 
@@ -23,8 +24,9 @@ include_directories( ${CURL_INCLUDE_DIRS} )
 
 
 
-add_executable(launchy ${SOURCESS} ${INCLUDES})
+add_executable(launchy ${SOURCESS})
 
+target_include_directories(launchy PRIVATE ${CMAKE_SOURCE_DIR}/src/)
 target_link_libraries( launchy SDL2main SDL2-static libcurl)
 target_link_libraries( launchy ${CURL_LIBRARIES} )
 

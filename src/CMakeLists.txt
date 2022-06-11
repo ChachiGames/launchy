@@ -1,1 +1,2 @@
-set(SOURCESS "./src/main.cpp" PARENT_SCOPE)
+set(SOURCESS ${SOURCESS}    "./src/main.cpp" 
+                            PARENT_SCOPE)
