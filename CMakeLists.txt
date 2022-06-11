@@ -22,8 +22,6 @@ set( CURL_STATIC_CRT ON CACHE BOOL "" FORCE )
 add_subdirectory(lib/CURL)
 include_directories( ${CURL_INCLUDE_DIRS} )
 
-
-
 add_executable(launchy ${SOURCESS})
 
 target_include_directories(launchy PRIVATE ${CMAKE_SOURCE_DIR}/src/)
