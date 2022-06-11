@@ -1,3 +1,9 @@
 [submodule "SDL"]
 	path = lib/SDL
 	url = https://github.com/libsdl-org/SDL.git
+[submodule "lib/openssl"]
+	path = lib/openssl
+	url = https://github.com/openssl/openssl
+[submodule "lib/CURL"]
+	path = lib/CURL
+	url = https://github.com/curl/curl
