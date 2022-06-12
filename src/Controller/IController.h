@@ -5,9 +5,9 @@ class IController
 {
 public:
 
-	virtual void Init(IModel* model, void* windowHandle) = 0;
+	virtual int Init(IModel* model, void* windowHandle) = 0;
 
-	virtual void Update() = 0;
+	virtual bool Update() = 0;
 
 protected:
 

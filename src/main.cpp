@@ -9,6 +9,7 @@
 
 #include "config.h"
 #include "View/SDL_View.h"
+#include "Controller/SDL_Controller.h"
 
 
 std::string global_string;
@@ -31,10 +32,15 @@ int main(int argc, char** argv)
     bool isRunning = true;
 
     SDLView* view = new SDLView();
+    SDLController* controller = new SDLController();
 
     // Initializes and checks that the initialization went well.
     int viewInitialization = view->Init();
     if(viewInitialization != 0) return viewInitialization;
+
+    // Initializes and checks that the initialization went well.
+    int controllerInitialization = controller->Init(nullptr, view);
+    if(controllerInitialization != 0) return controllerInitialization;
     
     CURL* curl;
     CURLcode res;
@@ -106,7 +112,8 @@ int main(int argc, char** argv)
             {
                 // Versions are switched
                 rename(thisFile.c_str(), "oldVersion.exe");
-                view->Quit();
+                delete controller;
+                delete view;
                 curl_global_cleanup();
 
                 return 2; //Exit with our own code for re-launch
@@ -120,23 +127,13 @@ int main(int argc, char** argv)
     // Infinite loop
     while (isRunning) {
 
-        SDL_Event event;
-
-        if (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT) {
-                isRunning = false;
-            }
-            if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE) {
-                isRunning = false;
-            }
-
-        }
-
+        isRunning = controller->Update();
         view->Render();
     }
 
     // Free
-    view->Quit();
+    delete controller;
+    delete view;
     return 0;
 }
 

@@ -7,6 +7,6 @@ public:
 	SDLController();
 	virtual ~SDLController();
 
-	virtual void Init(IModel* model, void* windowHandle);
-	virtual void Update();
+	virtual int Init(IModel* model, void* windowHandle);
+	virtual bool Update();
 };

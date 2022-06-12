@@ -2,6 +2,11 @@
 #include <SDL.h>
 #include <iostream>
 
+SDLView::~SDLView()
+{
+    Quit();
+}
+
 int SDLView::Init()
 {
 

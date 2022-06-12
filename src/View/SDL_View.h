@@ -5,8 +5,8 @@ class SDLView: public IView
 {
 public:
 
+	~SDLView();
 	virtual int Init();
-	virtual void Quit();
 
 	// TODO: Change for a better data structure
 	virtual void ShowGameInfo(int index);
@@ -15,6 +15,9 @@ public:
 	virtual void Render();
 
 private:
+
+	virtual void Quit();
+
 	struct SDL_Window* _window = nullptr;
 	struct SDL_Renderer* _renderer = nullptr;
 };
