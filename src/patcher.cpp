@@ -67,7 +67,9 @@ int main(int argc, char** argv)
             else
                 return 0;
         }
+        else
+            std::cout << "Error: launchy not found";
     }
-    std::cout << "Error: launchy not found";
+    std::cout << "Error: unreachable";
     return 1;
 }

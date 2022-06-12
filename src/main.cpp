@@ -24,6 +24,7 @@ int main(int argc, char** argv)
 
     std::unique_ptr<IModel> launcher = std::make_unique<Launcher>();
     if(int ret = launcher->Init(view.get(), controller.get()); ret != 0){
+        std::cout<<"EY"<<std::endl;
         return ret;
     }
     

@@ -1,3 +1,5 @@
+#pragma once
+
 #include <string>
 #include <curl/curl.h>
 
@@ -11,10 +13,8 @@ public:
     int Init();
 
     void DownloadToFile(std::string URL, std::string pathToFile);
-    void DownloadToString(std::string URL, std::string buffer);
+    std::string DownloadToString(std::string URL);
     
-    //returns true if v1 >= v2
-    bool CompareVersions(string v1, string v2);
 private:
     CURL* _curl;
-}
+};

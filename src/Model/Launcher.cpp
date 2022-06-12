@@ -1,5 +1,6 @@
 #include "Launcher.h"
 #include "config.h"
+#include "NetworkManager.h"
 
 #include <assert.h>
 #include <iostream>
@@ -10,18 +11,6 @@
 #include <curl/curl.h>
 
 
-std::string global_string;
-size_t write_callback(char* ptr, size_t size, size_t nmemb, void* userdata)
-{
-    size_t realsize = size * nmemb;
-    global_string.append(ptr, realsize);
-    return realsize;
-}
-
-size_t write_data(void* ptr, size_t size, size_t nmemb, FILE* stream) {
-    size_t written = fwrite(ptr, size, nmemb, stream);
-    return written;
-}
 
 Launcher::Launcher()
 {
@@ -31,92 +20,65 @@ Launcher::~Launcher()
 {
 }
 
+std::vector<std::string> split(std::string s, std::string delimiter) {
+    size_t pos = 0;
+    std::vector<std::string> tokens;
+    while ((pos = s.find(delimiter)) != std::string::npos) {
+        std::string token = s.substr(0, pos);
+        tokens.push_back(token);
+        s.erase(0, pos + delimiter.length());
+    };
+    tokens.push_back(s);
+    return tokens;
+};
+
 int Launcher::Init(IView* view, IController* controller)
 {
-    assert((view != nullptr) &&  "view must be a valid memory address");
-    assert((controller != nullptr) &&  "controller must be a valid memory address");
+    assert(view);
+    assert(controller);
 
     _view = view;
     _controller = controller;
     
-    CURL* curl;
-    CURLcode res;
+    NetworkManager networkManager{};
+    if(int res = networkManager.Init(); res !=0)
+    {
+        std::cout << "Error initializing NetworkManager" << std::endl;
+        return res;
+    }
+    std::string buffer;
+    try{
+        buffer = networkManager.DownloadToString("https://chachigames.github.io/launchy/manifest");
+    }
+    catch (std::exception e){
+        std::cout << e.what()<<std::endl;
+        return 1;
+    }
+    auto splits = split(buffer, "\n");
+    std::string version = splits[0];
+    std::string link = splits[1];
 
-    curl_global_init(CURL_GLOBAL_DEFAULT);
 
-    curl = curl_easy_init();
+    auto numbers = split(version, ".");
+    if (numbers[0] > PROJECT_VER_MAJOR || numbers[1] > PROJECT_VER_MINOR || numbers[2] > PROJECT_VER_PATCH)
+    {
+        networkManager.DownloadToFile(link,std::filesystem::current_path().string() + "/newVersion.exe");
+    }
 
-    if (curl) {
-        curl_easy_setopt(curl, CURLOPT_URL, "https://chachigames.github.io/launchy/manifest");
+    std::string oldVersion = std::filesystem::current_path().string() + "/oldVersion.exe";
 
-        curl_easy_setopt(curl, CURLOPT_SSL_VERIFYSTATUS, 1);
-        curl_easy_setopt(curl, CURLOPT_CAINFO, ".\\cacert.pem");
-        curl_easy_setopt(curl, CURLOPT_CAPATH, ".\\cacert.pem");
-        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_callback);
+    // If there is an old version, it is removed
+    if (std::filesystem::exists(oldVersion)){
+        remove(oldVersion.c_str());
+    }
 
-        /* Perform the request, res will get the return code */
-        res = curl_easy_perform(curl);
-        
-        auto split = [](std::string s, std::string delimiter) {
-            size_t pos = 0;
-            std::vector<std::string> tokens;
-            while ((pos = s.find(delimiter)) != std::string::npos) {
-                std::string token = s.substr(0, pos);
-                tokens.push_back(token);
-                s.erase(0, pos + delimiter.length());
+    std::string newVersion = std::filesystem::current_path().string() + "/newVersion.exe";
 
-            };
-            tokens.push_back(s);
-            return tokens;
-        };
-
-        /* Check for errors */
-        if (res != CURLE_OK)
-            fprintf(stderr, "curl_easy_perform() failed: %s\n",
-                curl_easy_strerror(res));
-        else
-        {
-            auto splits = split(global_string, "\n");
-            std::string version = splits[0];
-            std::string link = splits[1];
-            
-
-            auto numbers = split(version, ".");
-            if (numbers[0] > PROJECT_VER_MAJOR || numbers[1] > PROJECT_VER_MINOR || numbers[2] > PROJECT_VER_PATCH)
-            {
-                FILE* fp = fopen((std::filesystem::current_path().string() + "/newVersion.exe").c_str(), "wb");
-                curl_easy_setopt(curl, CURLOPT_URL, link.c_str());
-                curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data);
-                curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
-                res = curl_easy_perform(curl);
-                if (res != CURLE_OK)
-                    fprintf(stderr, "curl_easy_perform() failed: %s\n",
-                        curl_easy_strerror(res));
-            }
-
-            std::string oldVersion = std::filesystem::current_path().string() + "/oldVersion.exe";
-
-            // If there is an old version, it is removed
-            if (std::filesystem::exists(oldVersion)){
-                remove(oldVersion.c_str());
-            }
-
-            std::string newVersion = std::filesystem::current_path().string() + "/newVersion.exe";
-
-            // there is a newer version
-            if (std::filesystem::exists(newVersion))
-            {
-                // Versions are switched
-                delete controller;
-                delete view;
-                curl_global_cleanup();
-
-                std::cout << "Invalid arguments given to launcher initialization" << std::endl;
-                return 2; //Exit with our own code for re-launch
-            }
-        }
-        /* always cleanup */
-        curl_easy_cleanup(curl);       
+    // there is a newer version
+    if (std::filesystem::exists(newVersion))
+    {
+        std::cout << "New version found" << std::endl;
+        return 2; //Exit with our own code for re-launch
     }
 
     return 0;
