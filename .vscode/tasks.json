@@ -1,0 +1,24 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Windows build",
+            "command": "echo unsupported OS",
+            "windows": {
+                "command": "./build.ps1"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "type": "shell",
+            "args": [],
+            "problemMatcher": [
+                "$tsc"
+            ],
+            "presentation": {
+                "reveal": "always"
+            },
+            "group": "build"
+        }
+    ]
+}
