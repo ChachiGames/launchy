@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.1)
 set(CMAKE_CXX_STANDARD 17)
-project(launchy VERSION "0.0.1" )
+project(launchy VERSION "0.0.2" )
 
 configure_file(${CMAKE_SOURCE_DIR}/config.h.in ${CMAKE_SOURCE_DIR}/src/config.h)
 

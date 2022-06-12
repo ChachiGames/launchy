@@ -32,21 +32,24 @@ int exc(std::string cmd, const char* v[]) {
 
 int main(int argc, char** argv)
 {
-    std::cout << "HJI"<<std::endl;
+    std::cout << "Checking for updates..."<<std::endl;
     std::string newVersion = std::filesystem::current_path().string() + "/newVersion.exe";
     std::string oldVersion = std::filesystem::current_path().string() +"/oldVersion.exe";
-    std::string launchy = std::filesystem::current_path().string() + "\\launchy.exe";
+    std::string launchy = std::filesystem::current_path().string() + "/launchy.exe";
     int res = 0;
     while (res == 0 || res == 2)
     {
         if (std::filesystem::exists(newVersion))
         {
+            std::cout << "New version found!"<<std::endl;
             if (std::filesystem::exists(oldVersion))
                 remove(oldVersion.c_str());
+            if (std::filesystem::exists(launchy))
+                remove(launchy.c_str());
 
             if (rename(newVersion.c_str(), "launchy.exe") != 0)
             {
-                std::cout << "Could not rename to launchy" << errno << std::endl;
+                std::cout << "Could not rename new version to launchy.exe" << errno << std::endl;
                 return 1;
             };
             const char* v[] = { launchy.c_str(), nullptr };
