@@ -5,7 +5,10 @@
             "label": "Windows build",
             "command": "echo unsupported OS",
             "windows": {
-                "command": "./build.ps1"
+                "command": "./build.ps1",
+                "args": [
+                    "debug"
+                ]
             },
             "options": {
                 "cwd": "${workspaceFolder}"
@@ -18,6 +21,22 @@
             "presentation": {
                 "reveal": "always"
             },
+            "group": "build"
+        },
+        {
+            "label": "Windows Run - Debug",
+            "type": "shell",
+            "windows": {
+                "command": "./patcher.exe",
+            },
+            "options": {
+                "cwd": "${workspaceFolder}/build/Debug/"
+            },
+            "command": "echo Unsupported platform",
+            "problemMatcher": [],
+            "dependsOn": [
+                "Windows build"
+            ],
             "group": "build"
         }
     ]
