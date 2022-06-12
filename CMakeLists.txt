@@ -36,3 +36,10 @@ add_custom_command(
         COMMAND ${CMAKE_COMMAND} -E copy
                 ${CMAKE_SOURCE_DIR}/dependencies/cacert.pem
                 ${CMAKE_SOURCE_DIR}/build/$<CONFIG>/cacert.pem)
+
+
+#Adding patcher project
+set(launchyOutput "${CMAKE_SOURCE_DIR}/build/$<CONFIG>/")
+
+add_executable(patcher src/patcher.cpp)
+set(RUNTIME_OUTPUT_DIRECTORY ${launchyOutput})
