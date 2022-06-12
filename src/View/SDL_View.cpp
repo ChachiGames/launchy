@@ -1,4 +1,6 @@
 #include "SDL_View.h"
+#include "IButtonView.h"
+
 #include <SDL.h>
 #include <iostream>
 
@@ -73,6 +75,11 @@ int SDLView::Init()
     return 0;
 }
 
+void SDLView::AddButton(IButtonView* button)
+{
+    _buttons.push_back(button);
+}
+
 void SDLView::Quit()
 {
     SDL_DestroyWindow(_window);
@@ -97,12 +104,15 @@ void SDLView::Render()
         rectangle.y = 0;
         SDL_GetWindowSize(_window, &rectangle.w, nullptr);
         rectangle.h = 20;
-         SDL_SetRenderDrawColor(_renderer, 255,255,255,255);
+        SDL_SetRenderDrawColor(_renderer, 255,255,255,255);
 
         SDL_RenderFillRect(_renderer, &rectangle);
-        //SDL_RenderDrawRect(_renderer, &rectangle);
 
         // render code goes here.....
+        for(int i = 0; i < _buttons.size(); i++)
+        {
+            _buttons[i]->Render(this);
+        }
 
         // Render modification
         SDL_RenderPresent(_renderer);
