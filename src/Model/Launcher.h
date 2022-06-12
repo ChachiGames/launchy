@@ -1,3 +1,4 @@
+#pragma once
 #include "IModel.h"
 #include "View/IView.h"
 #include "Controller/IController.h"
