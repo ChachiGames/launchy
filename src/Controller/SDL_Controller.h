@@ -9,4 +9,6 @@ public:
 
 	virtual int Init(IModel* model, void* windowHandle);
 	virtual bool Update();
+private:
+	IModel* _model;
 };

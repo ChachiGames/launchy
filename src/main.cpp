@@ -45,6 +45,7 @@ int main(int argc, char** argv)
     std::pair<ButtonLogic*, IButtonView*> testButton = ButtonFactory::CreateButton<ButtonViewTest>(250, 250, 50, 25, style, [](){std::cout << "Hello\n";});
 
     view.get()->AddButton(testButton.second);
+    launcher.get()->AddButton(testButton.first);
     
     // Infinite loop
     while (isRunning) {

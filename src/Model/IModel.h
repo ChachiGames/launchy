@@ -4,6 +4,7 @@ enum class Direction { UP = 0, DOWN, LEFT, RIGHT };
 
 class IView;
 class IController;
+class ButtonLogic;
 
 class IModel
 {
@@ -19,6 +20,7 @@ public:
 	// Gamepads and other digital controllers
 	virtual void Moved(Direction direction) = 0;
 
+	virtual void AddButton(ButtonLogic*) = 0;
 protected:
 	LauncherState _state = LauncherState::HOME;
 };

@@ -1,6 +1,8 @@
 #include "Launcher.h"
 #include "config.h"
 #include "NetworkManager.h"
+#include "ButtonLogic.h"
+#include "View/IButtonView.h"
 
 #include <assert.h>
 #include <iostream>
@@ -88,12 +90,35 @@ void Launcher::Update()
     _state = LauncherState::POP_UP;
 }
 
+void Launcher::AddButton(ButtonLogic* button)
+{
+    _buttons.push_back(button);
+}
+
 void Launcher::PointerMoved(int x, int y)
 {
+    for(ButtonLogic* bl : _buttons)
+        if(bl->GetView()->IsOver(x,y)){
+            bl->OnHover();
+            break;
+        }
+        else if (bl->GetState() != ButtonState::BTN_IDLE)
+        {
+            bl->Idle();
+        }
 }
 
 void Launcher::PointerClicked(int x, int y)
 {
+    for(ButtonLogic* bl : _buttons)
+        if(bl->GetView()->IsOver(x,y)){
+            bl->OnClicked();
+            break;
+        }
+        else if (bl->GetState() != ButtonState::BTN_IDLE)
+        {
+            bl->Idle();
+        }
 }
 
 void Launcher::Moved(Direction direction)

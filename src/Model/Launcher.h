@@ -4,6 +4,10 @@
 #include "Controller/IController.h"
 
 
+#include <vector>
+
+
+class ButtonLogic;
 class Launcher : public IModel
 {
 public:
@@ -21,7 +25,11 @@ public:
 
 	// Gamepads and other digital controllers
 	virtual void Moved(Direction direction) override;
+
+	// Adds a button to its list
+	virtual void AddButton(ButtonLogic*) override;
 private:
 	IView* _view;
 	IController* _controller;
+	std::vector<ButtonLogic*> _buttons;
 };
