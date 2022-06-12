@@ -8,6 +8,7 @@
 #include <string>
 
 #include "config.h"
+#include "View/SDL_View.h"
 
 
 std::string global_string;
@@ -27,26 +28,14 @@ int main(int argc, char** argv)
 {
     std::cout << "[" << PROJECT_NAME <<"] - Version: {"<< PROJECT_VER<<"}"<<"\n";
 
-    // Declaration
-    SDL_Window* window;
-    SDL_Renderer* renderer;
     bool isRunning = true;
 
-    // Initialisation
-    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
-        printf("Unable to init SDL : %s", SDL_GetError());
-        return 1;
-    } window = SDL_CreateWindow("Launchy", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 480, SDL_WINDOW_SHOWN|SDL_WINDOW_BORDERLESS);
-    if (window == NULL) {
-        printf("Unable to create window : %s", SDL_GetError());
-        return 1;
-    }
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-    if (renderer == NULL) {
-        printf("Unable to create renderer : %s", SDL_GetError());
-        return 1;
-    }
+    SDLView* view = new SDLView();
 
+    // Initializes and checks that the initialization went well.
+    int viewInitialization = view->Init();
+    if(viewInitialization != 0) return viewInitialization;
+    
     CURL* curl;
     CURLcode res;
 
@@ -117,9 +106,7 @@ int main(int argc, char** argv)
             {
                 // Versions are switched
                 rename(thisFile.c_str(), "oldVersion.exe");
-                SDL_DestroyWindow(window);
-                SDL_DestroyRenderer(renderer);
-                SDL_Quit();
+                view->Quit();
                 curl_global_cleanup();
 
                 return 2; //Exit with our own code for re-launch
@@ -145,19 +132,11 @@ int main(int argc, char** argv)
 
         }
 
-        // Clear screen
-        SDL_RenderClear(renderer);
-
-        // render code goes here.....
-
-        // Render modification
-        SDL_RenderPresent(renderer);
+        view->Render();
     }
 
     // Free
-    SDL_DestroyWindow(window);
-    SDL_DestroyRenderer(renderer);
-    SDL_Quit();
+    view->Quit();
     return 0;
 }
 

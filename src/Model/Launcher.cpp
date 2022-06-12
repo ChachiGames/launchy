@@ -10,6 +10,7 @@ Launcher::~Launcher()
 
 void Launcher::Update()
 {
+    _state = LauncherState::POP_UP;
 }
 
 void Launcher::PointerMoved(int x, int y)
