@@ -22,6 +22,8 @@ set( CURL_STATIC_CRT ON CACHE BOOL "" FORCE )
 add_subdirectory(lib/CURL)
 include_directories( ${CURL_INCLUDE_DIRS} )
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_CXX_CLANG_TIDY clang-tidy -checks=-*,readability-*)
 add_executable(launchy ${SOURCESS})
 
 target_include_directories(launchy PRIVATE ${CMAKE_SOURCE_DIR}/src/)

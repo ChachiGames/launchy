@@ -9,7 +9,7 @@ else
 }
 
 Push-Location build
-cmake ..
+cmake -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=ON .. 
 cmake --build . -j 6
 $build_path = $PWD
 cmd.exe /k "cd $path_to_native_tools & vcvars64.bat & cd $build_path & msbuild launchy.sln -t:patcher -m:6 /p:Configuration=Debug & msbuild launchy.sln -t:patcher -m:6 /p:Configuration=Release &  msbuild launchy.sln -t:launchy -m:6 /p:Configuration=Release &  msbuild launchy.sln -t:launchy -m:6 /p:Configuration=Debug &  exit"
