@@ -13,8 +13,41 @@
 #include "Model/ButtonLogic.h"
 
 
+#include "SDL_image.h"
+#include "SDL_ttf.h"
+
+
 int main(int argc, char** argv)
 {
+    {
+        SDL_version compile_version;
+        const SDL_version* link_version;
+        TTF_VERSION(&compile_version);
+        printf("compiled with SDL_ttf version: %d.%d.%d\n", 
+            compile_version.major,
+            compile_version.minor,
+            compile_version.patch);
+        link_version=TTF_Linked_Version();
+        printf("running with SDL_ttf version: %d.%d.%d\n", 
+            link_version->major,
+            link_version->minor,
+            link_version->patch);
+    }    
+    {
+        SDL_version compile_version;
+        const SDL_version *link_version=IMG_Linked_Version();
+        SDL_IMAGE_VERSION(&compile_version);
+        printf("compiled with SDL_image version: %d.%d.%d\n", 
+                compile_version.major,
+                compile_version.minor,
+                compile_version.patch);
+        printf("running with SDL_image version: %d.%d.%d\n", 
+                link_version->major,
+                link_version->minor,
+                link_version->patch);
+    }
+
+
     std::cout << "[" << PROJECT_NAME <<"] - Version: {"<< PROJECT_VER<<"}"<<"\n";
 
     bool isRunning = true;

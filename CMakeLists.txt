@@ -11,6 +11,8 @@ add_subdirectory(tests)
 set( SDL_STATIC ON CACHE BOOL "" FORCE )
 set( SDL_SHARED OFF CACHE BOOL "" FORCE )
 add_subdirectory(lib/SDL)
+add_subdirectory(lib/SDL_image)
+add_subdirectory(lib/SDL_ttf)
 
 # Adding LibCURL
 set(OPENSSL_USE_STATIC_LIBS TRUE)
@@ -27,7 +29,7 @@ set(CMAKE_CXX_CLANG_TIDY clang-tidy -checks=-*,readability-*)
 add_executable(launchy ${SOURCESS})
 
 target_include_directories(launchy PRIVATE ${CMAKE_SOURCE_DIR}/src/)
-target_link_libraries( launchy SDL2main SDL2-static libcurl)
+target_link_libraries( launchy SDL2main SDL2-static SDL2_image SDL2_ttf libcurl)
 target_link_libraries( launchy ${CURL_LIBRARIES} )
 
 
