@@ -2,12 +2,34 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Windows build",
+            "label": "Windows Debug Build",
             "command": "echo unsupported OS",
             "windows": {
                 "command": "./build.ps1",
                 "args": [
-                    "debug"
+                    "Debug"
+                ]
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "type": "shell",
+            "args": [],
+            "problemMatcher": [
+                "$tsc"
+            ],
+            "presentation": {
+                "reveal": "always"
+            },
+            "group": "build"
+        },
+        {
+            "label": "Windows Release Build",
+            "command": "echo unsupported OS",
+            "windows": {
+                "command": "./build.ps1",
+                "args": [
+                    "Release"
                 ]
             },
             "options": {
@@ -35,7 +57,23 @@
             "command": "echo Unsupported platform",
             "problemMatcher": [],
             "dependsOn": [
-                "Windows build"
+                "Windows Debug Build"
+            ],
+            "group": "build"
+        },
+        {
+            "label": "Windows Run - Release",
+            "type": "shell",
+            "windows": {
+                "command": "./patcher.exe",
+            },
+            "options": {
+                "cwd": "${workspaceFolder}/build/Release/"
+            },
+            "command": "echo Unsupported platform",
+            "problemMatcher": [],
+            "dependsOn": [
+                "Windows Release Build"
             ],
             "group": "build"
         }

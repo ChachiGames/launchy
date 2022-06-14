@@ -20,7 +20,7 @@ find_package(OpenSSL REQUIRED)
 
 set( BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE )
 set( CURL_USE_OPENSSL ON CACHE BOOL "" FORCE )
-set( CURL_STATIC_CRT ON CACHE BOOL "" FORCE )
+set( CURL_STATIC_CRT OFF CACHE BOOL "" FORCE )
 add_subdirectory(lib/CURL)
 include_directories( ${CURL_INCLUDE_DIRS} )
 
