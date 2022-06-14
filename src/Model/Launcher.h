@@ -16,8 +16,8 @@ public:
 	virtual ~Launcher();
 
 	virtual int Init(IView* view, IController* controller) override;
-	bool CheckForUpdates();
-	int DownloadUpdates();
+	virtual bool CheckForUpdates();
+	virtual int DownloadUpdates();
 
 	// Logic goes here
 	virtual void Update() override;

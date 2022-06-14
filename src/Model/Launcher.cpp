@@ -48,9 +48,6 @@ int Launcher::Init(IView* view, IController* controller)
         std::cout << "Error initializing NetworkManager" << std::endl;
         return res;
     }
-
-    if(CheckForUpdates())
-        DownloadUpdates();
     return 0;
 }
 

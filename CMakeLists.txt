@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.1)
 set(CMAKE_CXX_STANDARD 17)
-project(launchy VERSION "0.0.4" )
+project(launchy VERSION "0.0.5" )
 
 configure_file(${CMAKE_SOURCE_DIR}/config.h.in ${CMAKE_SOURCE_DIR}/src/config.h)
 
@@ -40,6 +40,12 @@ add_custom_command(
         COMMAND ${CMAKE_COMMAND} -E copy
                 ${CMAKE_SOURCE_DIR}/dependencies/cacert.pem
                 ${CMAKE_SOURCE_DIR}/build/$<CONFIG>/cacert.pem)
+
+add_custom_command(
+        TARGET launchy POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy
+                ${CMAKE_SOURCE_DIR}/dependencies/logo.png
+                ${CMAKE_SOURCE_DIR}/build/$<CONFIG>/logo.png)
 
 
 #Adding patcher project
