@@ -3,11 +3,12 @@
 #include "View/IView.h"
 #include "Controller/IController.h"
 
-
+#include <string>
 #include <vector>
 
-
 class ButtonLogic;
+class NetworkManager;
+
 class Launcher : public IModel
 {
 public:
@@ -15,6 +16,8 @@ public:
 	virtual ~Launcher();
 
 	virtual int Init(IView* view, IController* controller) override;
+	bool CheckForUpdates();
+	int DownloadUpdates();
 
 	// Logic goes here
 	virtual void Update() override;
@@ -29,7 +32,10 @@ public:
 	// Adds a button to its list
 	virtual void AddButton(ButtonLogic*) override;
 private:
-	IView* _view;
-	IController* _controller;
+	IView* _view = nullptr;
+	IController* _controller = nullptr;
 	std::vector<ButtonLogic*> _buttons;
+	
+	NetworkManager* _networkManager = nullptr;
+	std::string _updateLink;
 };

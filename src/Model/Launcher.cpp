@@ -42,31 +42,44 @@ int Launcher::Init(IView* view, IController* controller)
     _view = view;
     _controller = controller;
     
-    NetworkManager networkManager{};
-    if(int res = networkManager.Init(); res !=0)
+    _networkManager = new NetworkManager();
+    if(int res = _networkManager->Init(); res !=0)
     {
         std::cout << "Error initializing NetworkManager" << std::endl;
         return res;
     }
+
+    if(CheckForUpdates())
+        DownloadUpdates();
+    return 0;
+}
+
+
+bool Launcher::CheckForUpdates()
+{
+    std::cout << "Checking for new version...\n";
+
     std::string buffer;
     try{
-        buffer = networkManager.DownloadToString("https://chachigames.github.io/launchy/manifest");
+        buffer = _networkManager->DownloadToString("https://chachigames.github.io/launchy/manifest");
     }
     catch (std::exception e){
         std::cout << e.what()<<std::endl;
-        return 1;
+        return false;
     }
     auto splits = split(buffer, "\n");
     std::string version = splits[0];
-    std::string link = splits[1];
+    auto numbers = split(version, "."); 
+    _updateLink = splits[1];
 
+    return  numbers[0] > PROJECT_VER_MAJOR ||numbers[1] > PROJECT_VER_MINOR || numbers[2]  > PROJECT_VER_PATCH;
+}
 
-    auto numbers = split(version, ".");
-    if (numbers[0] > PROJECT_VER_MAJOR || numbers[1] > PROJECT_VER_MINOR || numbers[2] > PROJECT_VER_PATCH)
-    {
-        networkManager.DownloadToFile(link,std::filesystem::current_path().string() + "/newVersion.exe");
-    }
+int Launcher::DownloadUpdates()
+{
+    std::cout << "Downloading new version...\n";
 
+    _networkManager->DownloadToFile(_updateLink, std::filesystem::current_path().string() + "/newVersion.exe");
     std::string oldVersion = std::filesystem::current_path().string() + "/oldVersion.exe";
 
     // If there is an old version, it is removed
@@ -76,15 +89,16 @@ int Launcher::Init(IView* view, IController* controller)
 
     std::string newVersion = std::filesystem::current_path().string() + "/newVersion.exe";
 
-    // there is a newer version
+    // There is a newer version
     if (std::filesystem::exists(newVersion))
     {
         std::cout << "New version found" << std::endl;
         return 2; //Exit with our own code for re-launch
     }
 
-    return 0;
+    return 0;    
 }
+
 void Launcher::Update()
 {
     _state = LauncherState::POP_UP;
