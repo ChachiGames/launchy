@@ -11,4 +11,6 @@ struct ButtonStyle
 
     uint32_t hoverColor;
     uint32_t clickedColor;
+    bool relativeX;
+    bool relativeY;
 };

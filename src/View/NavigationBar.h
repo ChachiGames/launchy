@@ -11,7 +11,7 @@ public:
     ~NavigationBar();
 
     void Render();
-
+    bool HitAnyButton(int x, int y);
 private:
     const int _barHeight = 20;
     const int _buttonSize = 16;

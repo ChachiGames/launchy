@@ -18,6 +18,9 @@ public:
 	// Logic goes here
 	virtual void Update() = 0;
 	
+	//Running check to continue running application
+	virtual bool Running() = 0;
+
 	// Mouse and other analogic controllers
 	virtual void PointerMoved(int x, int y) = 0;
 	virtual void PointerClicked(int x, int y) = 0;

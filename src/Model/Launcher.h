@@ -24,6 +24,10 @@ public:
 	// Logic goes here
 	virtual void Update() override;
 
+
+	virtual bool Running() override;
+
+
 	// Mouse and other analogic controllers
 	virtual void PointerMoved(int x, int y) override;
 	virtual void PointerClicked(int x, int y) override;
@@ -40,4 +44,6 @@ private:
 	
 	NetworkManager* _networkManager = nullptr;
 	std::string _updateLink;
+
+	bool _running = true;
 };

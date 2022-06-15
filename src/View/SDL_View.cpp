@@ -16,6 +16,11 @@ SDLView::~SDLView()
 
 SDL_HitTestResult MyCallback(SDL_Window* win, const SDL_Point* area, void* data)
 {
+
+    // Early check to not process if any navigation button is pressed
+    if(((NavigationBar*)data)->HitAnyButton(area->x, area->y))
+        return SDL_HITTEST_NORMAL;
+
     // Left some margins for scaling the window
     int margins = 5;
     int menuBarHeight = 20; // hard-coded until there is a proper menu bar. This is just a concept
@@ -81,10 +86,12 @@ int SDLView::Init(IModel* model)
         return 1;
     }
 
-    SDL_SetWindowResizable(_window, SDL_TRUE);
-    SDL_SetWindowHitTest(_window, MyCallback, _window);
-
     _navigationBar = new NavigationBar(model, this);
+
+
+    SDL_SetWindowResizable(_window, SDL_TRUE);
+    SDL_SetWindowHitTest(_window, MyCallback, _navigationBar);
+
     return 0;
 }
 
