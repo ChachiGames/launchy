@@ -37,9 +37,3 @@ void ButtonViewTest::OnClick()
 {
     _currentColor = _style.clickedColor;
 }
-
-bool ButtonViewTest::IsOver(int x, int y)
-{
-    return  x >= _x && x < _x + _width &&
-            y >= _y && y < _y + _height;
-}

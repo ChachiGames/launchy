@@ -3,17 +3,19 @@
 
 #include <vector>
 
+class IModel;
 class IButtonView;
 struct SDL_Renderer;
 struct SDL_Window;
 class Texture;
+class NavigationBar;
 
 class SDLView: public IView
 {
 public:
 
 	~SDLView();
-	virtual int Init();
+	virtual int Init(IModel* model);
 
 	virtual void ShowSplashArt();
 	virtual void AddButton(IButtonView* button);
@@ -40,4 +42,5 @@ private:
 
 	SDL_Window* _window = nullptr;
 	SDL_Renderer* _renderer = nullptr;
+	NavigationBar* _navigationBar = nullptr;
 };

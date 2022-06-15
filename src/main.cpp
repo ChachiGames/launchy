@@ -24,9 +24,6 @@ int main(int argc, char** argv)
     std::unique_ptr<IController>controller=std::make_unique<SDLController>();
     std::unique_ptr<IModel> launcher = std::make_unique<Launcher>();
 
-    if(int ret = view->Init(); ret != 0){
-        return ret;
-    }
     if(int ret = launcher->Init(view.get(), controller.get()); ret != 0){
         std::cout<<"EY"<<std::endl;
         return ret;
@@ -34,10 +31,14 @@ int main(int argc, char** argv)
     if(int ret = controller->Init(launcher.get(), view.get()); ret != 0){
         return ret;
     }
+    if(int ret = view->Init(launcher.get()); ret != 0){
+        return ret;
+    }
     
     int exitCode = 0;
     if(launcher->CheckForUpdates())
     {
+        std::cout << "new version found\n";
         /*
             Tests to check that buttons work (kinda).
         */
@@ -58,7 +59,8 @@ int main(int argc, char** argv)
         launcher.get()->AddButton(testButton.first);
         view.get()->AddButton(testButton.second);
     }
-    view->ShowSplashArt();
+    else
+        view->ShowSplashArt();
     // Infinite loop
     while (isRunning) {
         isRunning = controller->Update();

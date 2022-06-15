@@ -51,6 +51,10 @@ int Launcher::Init(IView* view, IController* controller)
     return 0;
 }
 
+void Launcher::Quit()
+{
+    std::cout << "Me cieeeeeeeeerro\n";
+}
 
 bool Launcher::CheckForUpdates()
 {

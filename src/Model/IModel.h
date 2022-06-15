@@ -10,7 +10,8 @@ class IModel
 {
 public:
 	virtual int Init(IView*, IController*) = 0;
-
+	virtual void Quit() = 0;
+	
 	virtual bool CheckForUpdates() = 0;
 	virtual int DownloadUpdates() = 0;
 

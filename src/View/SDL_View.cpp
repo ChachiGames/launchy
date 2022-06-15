@@ -1,6 +1,8 @@
 #include "SDL_View.h"
 #include "IButtonView.h"
 #include "Texture.h"
+#include "NavigationBar.h"
+#include "Model/IModel.h"
 
 #include <SDL.h>
 #include <SDL_image.h>
@@ -8,6 +10,7 @@
 
 SDLView::~SDLView()
 {
+    delete _navigationBar;
     Quit();
 }
 
@@ -51,7 +54,7 @@ SDL_HitTestResult MyCallback(SDL_Window* win, const SDL_Point* area, void* data)
 }
 
 
-int SDLView::Init()
+int SDLView::Init(IModel* model)
 {
 
     // Initialisation
@@ -81,6 +84,7 @@ int SDLView::Init()
     SDL_SetWindowResizable(_window, SDL_TRUE);
     SDL_SetWindowHitTest(_window, MyCallback, _window);
 
+    _navigationBar = new NavigationBar(model, this);
     return 0;
 }
 
@@ -130,30 +134,22 @@ void SDLView::ShowGameInfo(int index)
 
 void SDLView::Render()
 {
-    
-         SDL_SetRenderDrawColor(_renderer, 0,0,0,255);
-        // Clear screen
-        SDL_RenderClear(_renderer);
+    SDL_SetRenderDrawColor(_renderer, 0,0,0,255);
 
-        SDL_Rect rectangle;
-        rectangle.x = 0;
-        rectangle.y = 0;
-        SDL_GetWindowSize(_window, &rectangle.w, nullptr);
-        rectangle.h = 20;
-        SDL_SetRenderDrawColor(_renderer, 255,255,255,255);
+    // Clear screen
+    SDL_RenderClear(_renderer);
 
-        SDL_RenderFillRect(_renderer, &rectangle);
+    // render code goes here.....
+    for(int i = 0; i < _buttons.size(); i++)
+    {
+        _buttons[i]->Render(this);
+    }
+    for(Texture* t : _textures)
+    {
+        t->Render(0,0);
+    }
 
-        // render code goes here.....
-        for(int i = 0; i < _buttons.size(); i++)
-        {
-            _buttons[i]->Render(this);
-        }
-        for(Texture* t : _textures)
-        {
-            t->Render(0,0);
-        }
-
-        // Render modification
-        SDL_RenderPresent(_renderer);
+    _navigationBar->Render();
+    // Render modification
+    SDL_RenderPresent(_renderer);
 }

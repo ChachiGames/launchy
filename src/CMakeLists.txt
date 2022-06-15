@@ -4,6 +4,8 @@ set(SOURCESS "./src/main.cpp"
 			 "./src/Model/ButtonLogic.cpp"
 			 "./src/View/SDL_View.cpp"
 			 "./src/View/ButtonViewTest.cpp"
+			 "./src/View/NavigationBar.cpp"
+			 "./src/View/BaseButton.cpp"
 			 "./src/View/Texture.cpp"
 			 "./src/Controller/SDL_Controller.cpp"
 PARENT_SCOPE)

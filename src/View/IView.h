@@ -1,12 +1,13 @@
 #pragma once
 
 class IButtonView;
+class IModel;
 
 class IView
 {
 public:
 
-	virtual int Init() = 0;
+	virtual int Init(IModel* model) = 0;
 	virtual void Quit() = 0;
 
 	virtual void ShowSplashArt() = 0;
