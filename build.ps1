@@ -16,12 +16,12 @@ else
 if($configuration -eq 'Debug') 
 {
     Write-Output "------ [Debug build selected] -------"
-    $build_commands = "msbuild launchy.sln -t:patcher -m /p:Configuration=Debug &  msbuild launchy.sln -t:launchy -m /p:Configuration=Debug" 
+    $build_commands = "msbuild launchy.sln -t:patcher,patcher -m /p:Configuration=Debug" 
 }
 elseif($configuration -eq "Release")
 {
     Write-Output "------ [Release build selected] -------"
-    $build_commands = "msbuild launchy.sln -t:patcher -m /p:Configuration=Release &  msbuild launchy.sln -t:launchy -m /p:Configuration=Release"
+    $build_commands = "msbuild launchy.sln -t:launchy,patcher -m /p:Configuration=Release"
 }
 else
 {
