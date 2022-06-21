@@ -22,39 +22,16 @@ SDL_HitTestResult MyCallback(SDL_Window* win, const SDL_Point* area, void* data)
         return SDL_HITTEST_NORMAL;
 
     // Left some margins for scaling the window
-    int margins = 5;
     int menuBarHeight = 20; // hard-coded until there is a proper menu bar. This is just a concept
     
     int w,h;
     SDL_GetWindowSize(win, &w, &h);
     
     //Checks if inside the rectangle
-    if(area->x >= margins && area->x < w - margins && area->y >= margins && area->y < menuBarHeight)
+    if(area->x >= 0 && area->x < w && area->y >= 0 && area->y < menuBarHeight)
     {
         return SDL_HITTEST_DRAGGABLE;
     }
-    
-    // Checks how it should be scaled depending on the y axis
-    if(area->x >= 0 && area->x < margins)
-    {
-       if(area->y >= 0 && area->y < margins) return SDL_HITTEST_RESIZE_TOPLEFT;
-       if(area->y >= margins && area->y < h - margins) return SDL_HITTEST_RESIZE_LEFT;
-       return SDL_HITTEST_RESIZE_BOTTOMLEFT;
-    }
-
-    else if(area->x >= margins && area->x < w - margins)
-    {
-        if(area->y >= 0 && area->y < margins) return SDL_HITTEST_RESIZE_TOP;
-        if(area->y >= h - margins && area->y < h) return SDL_HITTEST_RESIZE_BOTTOM;
-    }
-
-    else if(area->x >= w - margins && area->x < w)
-    {
-       if(area->y >= 0 && area->y < margins) return SDL_HITTEST_RESIZE_TOPRIGHT;
-       if(area->y >= margins && area->y < h - margins) return SDL_HITTEST_RESIZE_RIGHT;
-       return SDL_HITTEST_RESIZE_BOTTOMRIGHT;
-    }
-
     return SDL_HITTEST_NORMAL;
 }
 
@@ -74,7 +51,7 @@ int SDLView::Init(IModel* model)
         return 1;
     }
     
-    _window = SDL_CreateWindow("Launchy", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 480, SDL_WINDOW_SHOWN|SDL_WINDOW_BORDERLESS);
+    _window = SDL_CreateWindow("Launchy", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1920/2, 1080/2, SDL_WINDOW_SHOWN|SDL_WINDOW_BORDERLESS);
     if (_window == NULL) {
         printf("Unable to create window : %s", SDL_GetError());
         return 1;
@@ -91,6 +68,7 @@ int SDLView::Init(IModel* model)
 
     SDL_SetWindowResizable(_window, SDL_TRUE);
     SDL_SetWindowHitTest(_window, MyCallback, _navigationBar);
+    SDL_RenderSetLogicalSize(_renderer, 1920/2, 1080/2);
 
     return 0;
 }

@@ -18,7 +18,6 @@ private:
     const int _buttonMargin = 10;
 
     IButtonView* _minimizeButton = nullptr;
-    IButtonView* _maximizeButton = nullptr;
     IButtonView* _closeButton = nullptr;
 
     SDLView* _view = nullptr;
