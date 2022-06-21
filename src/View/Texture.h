@@ -12,7 +12,7 @@ class Texture
         Texture(SDLView* view);
 
         //Deallocates memory
-        ~Texture();
+        virtual ~Texture();
 
         //Loads image at specified path
         bool LoadFromFile( std::string path );
@@ -35,6 +35,9 @@ class Texture
         //Gets image dimensions
         int GetWidth();
         int GetHeight();
+
+        void SetWidth(int width);
+        void SetHeight(int height);
 
     private:
         //The actual hardware texture

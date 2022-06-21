@@ -1,6 +1,7 @@
 #include "SDL_View.h"
 #include "IButtonView.h"
 #include "Texture.h"
+#include "SplashArt.h"
 #include "NavigationBar.h"
 #include "Model/IModel.h"
 
@@ -10,7 +11,6 @@
 
 SDLView::~SDLView()
 {
-    delete _navigationBar;
     Quit();
 }
 
@@ -75,11 +75,16 @@ int SDLView::Init(IModel* model)
 
 void SDLView::ShowSplashArt()
 {
-    Texture* t = new Texture(this);
-    if(!t->LoadFromFile("./logo.png"))
+    _splashArt = new SplashArt(this, SPLASH_ART_TIME, SPLASH_ART_OFFSET);
+    if(!_splashArt->LoadFromFile("./logo.png"))
+    {
         std::cout << "Failed loading logo.png" << std::endl;
-    else
-        _textures.push_back(t);
+        delete _splashArt;
+        _splashArt = nullptr;
+    }
+
+    _splashArt->SetWidth(1920 * 0.5f);
+    _splashArt->SetHeight(1080 * 0.5f);
 }
 
 void SDLView::AddButton(IButtonView* button)
@@ -107,6 +112,13 @@ void SDLView::Quit()
         delete b;
     for(auto* t : _textures)
         delete t;
+    if(_splashArt)
+    {
+        delete _splashArt;
+        _splashArt = nullptr;
+    }
+    
+    delete _navigationBar;
     SDL_DestroyWindow(_window);
     SDL_DestroyRenderer(_renderer);
     SDL_Quit();
@@ -117,12 +129,21 @@ void SDLView::ShowGameInfo(int index)
 
 }
 
+void SDLView::Animate(float deltaTime)
+{
+    if(_splashArt != nullptr)
+        _splashArt->Animate(deltaTime);
+}
+
 void SDLView::Render()
 {
-    SDL_SetRenderDrawColor(_renderer, 0,0,0,255);
+    SDL_SetRenderDrawColor(_renderer, 45,14,69,255);
 
     // Clear screen
     SDL_RenderClear(_renderer);
+
+    if(_splashArt->IsActive())
+        _splashArt->Render(0,0);
 
     // render code goes here.....
     for(int i = 0; i < _buttons.size(); i++)

@@ -104,7 +104,7 @@ int Launcher::DownloadUpdates()
     return 0;    
 }
 
-void Launcher::Update()
+void Launcher::Update(float deltaTime)
 {
     _state = LauncherState::POP_UP;
 }

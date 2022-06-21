@@ -8,13 +8,14 @@ class IButtonView;
 struct SDL_Renderer;
 struct SDL_Window;
 class Texture;
+class SplashArt;
 class NavigationBar;
 
 class SDLView: public IView
 {
 public:
 
-	~SDLView();
+	virtual ~SDLView();
 	virtual int Init(IModel* model);
 
 	virtual void ShowSplashArt();
@@ -24,6 +25,7 @@ public:
 	virtual void ShowGameInfo(int index);
 	// TODO: Add other methods to show the info
 
+	virtual void Animate(float deltaTime);
 	virtual void Render();
 
 
@@ -40,7 +42,12 @@ private:
 	std::vector<IButtonView*> _buttons;
 	std::vector<Texture*> _textures;
 
+	SplashArt* _splashArt = nullptr;
+
 	SDL_Window* _window = nullptr;
 	SDL_Renderer* _renderer = nullptr;
 	NavigationBar* _navigationBar = nullptr;
+
+	const int SPLASH_ART_TIME = 2;
+	const int SPLASH_ART_OFFSET = 3;
 };

@@ -2,6 +2,7 @@
 #include <string>
 #include <memory>
 #include <utility>
+#include <chrono>
 
 #include "config.h"
 #include "View/SDL_View.h"
@@ -20,9 +21,9 @@ int main(int argc, char** argv)
 
     bool isRunning = true;
 
-    std::unique_ptr<IView>view = std::make_unique<SDLView>();
-    std::unique_ptr<IController>controller=std::make_unique<SDLController>();
-    std::unique_ptr<IModel> launcher = std::make_unique<Launcher>();
+    std::shared_ptr<IView>view = std::make_shared<SDLView>();
+    std::shared_ptr<IController>controller=std::make_shared<SDLController>();
+    std::shared_ptr<IModel> launcher = std::make_shared<Launcher>();
 
     if(int ret = launcher->Init(view.get(), controller.get()); ret != 0){
         return ret;
@@ -60,11 +61,22 @@ int main(int argc, char** argv)
     }
     else
         view->ShowSplashArt();
+
+	auto lastFrame = std::chrono::steady_clock::now();
+	auto curFrame = std::chrono::steady_clock::now();
+
     // Infinite loop
-    while (launcher->Running()) {
+    while (launcher->Running()) 
+    {
+        curFrame = std::chrono::steady_clock::now();
+		float deltaTime = std::chrono::duration_cast<std::chrono::milliseconds>(curFrame - lastFrame).count() / 1000.0f;
+
         controller->Update();
-        launcher->Update();
+        launcher->Update(deltaTime);
+        view->Animate(deltaTime);
         view->Render();
+
+		lastFrame = curFrame;
     }
 
     return exitCode;

@@ -16,7 +16,7 @@ public:
 	virtual int DownloadUpdates() = 0;
 
 	// Logic goes here
-	virtual void Update() = 0;
+	virtual void Update(float deltaTime) = 0;
 	
 	//Running check to continue running application
 	virtual bool Running() = 0;

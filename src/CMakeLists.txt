@@ -7,5 +7,6 @@ set(SOURCESS "./src/main.cpp"
 			 "./src/View/NavigationBar.cpp"
 			 "./src/View/BaseButton.cpp"
 			 "./src/View/Texture.cpp"
+			 "./src/View/SplashArt.cpp"
 			 "./src/Controller/SDL_Controller.cpp"
 PARENT_SCOPE)

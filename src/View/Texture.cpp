@@ -2,6 +2,7 @@
 #include "SDL_View.h"
 
 #include <SDL_Image.h>
+#include <iostream>
 
 //Initializes variables
 Texture::Texture(SDLView* view): _view(view)
@@ -10,7 +11,11 @@ Texture::Texture(SDLView* view): _view(view)
 }
 
 //Deallocates memory
-Texture::~Texture(){}
+Texture::~Texture()
+{
+    SDL_DestroyTexture(_texture);
+    _texture = nullptr;
+}
 
 //Loads image at specified path
 bool Texture::LoadFromFile( std::string path )
@@ -32,7 +37,7 @@ bool Texture::LoadFromFile( std::string path )
             return false;
         }
         _texture = newTexture;
-
+        
         //Get rid of old loaded surface
         SDL_FreeSurface( loadedSurface );
     }
@@ -59,26 +64,25 @@ void Texture::SetColor( Uint8 red, Uint8 green, Uint8 blue )
 //Set blending
 void Texture::SetBlendMode( SDL_BlendMode blending )
 {
-
+    SDL_SetTextureBlendMode(_texture, blending);
 }
 
 //Set alpha modulation
 void Texture::SetAlpha( Uint8 alpha )
 {
-
+    SDL_SetTextureAlphaMod(_texture, alpha);
 }
 
 //Renders texture at given point
 void Texture::Render( int x, int y, SDL_Rect* clip, double angle, SDL_Point* center, SDL_RendererFlip flip)
 {
-    
-    SDL_Rect dest{0,0,_view->GetWidth(),_view->GetHeight()};
-    // SDL_Rect dest{x,        y,
-    //               x+_width, y+_height};
-
+    SDL_Rect dest{0,0,_width,_height};
     SDL_RenderCopyEx(_view->GetRenderer(),_texture,clip,&dest,angle,center,flip);
 }
 
 //Gets image dimensions
 int Texture::GetWidth(){return _width;}
 int Texture::GetHeight(){return _height;}
+
+void Texture::SetWidth(int w) {_width = w;}
+void Texture::SetHeight(int h) {_height = h;}

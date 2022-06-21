@@ -22,7 +22,7 @@ public:
 	virtual int DownloadUpdates();
 
 	// Logic goes here
-	virtual void Update() override;
+	virtual void Update(float deltaTime) override;
 
 
 	virtual bool Running() override;
