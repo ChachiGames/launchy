@@ -1,0 +1,31 @@
+{
+	"version": 3,
+	"configurePresets": [
+		{
+			"name": "windows-default",
+			"displayName": "Windows x64 Debug",
+			"description": "Sets Ninja generator, compilers, x64 architecture, build and install directory, debug build type",
+			"generator": "Ninja",
+			"binaryDir": "${sourceDir}/out/build/${presetName}",
+			"architecture": {
+				"value": "x64",
+				"strategy": "external"
+			},
+			"toolchainFile": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+			"cacheVariables": {
+				"CMAKE_BUILD_TYPE": "Debug"
+			},
+			"environment": {
+			}
+		}
+	],
+	"buildPresets": [
+		{
+			"name": "default",
+			"configurePreset": "windows-default",
+			"environment": {
+				"CMAKE_TOOLCHAIN_FILE": "C:/Users/Drathi/DEV/vcpkg/scripts/buildsystems/vcpkg.cmake"
+			}
+		}
+	]
+}
