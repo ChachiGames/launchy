@@ -6,10 +6,10 @@ set(target_sources
 )
 list(TRANSFORM target_sources PREPEND "src/")
 
-add_library(${PROJECT_NAME} STATIC ${target_sources})
+add_library(${PROJECT_NAME} STATIC ${target_sources} "include/controller.hpp")
 
-target_include_directories(${PROJECT_NAME} PUBLIC "./include")
-target_link_libraries(${PROJECT_NAME} PRIVATE Model)
+target_include_directories(${PROJECT_NAME} PUBLIC "include")
+target_link_libraries(${PROJECT_NAME} PUBLIC Model)
 
 #=================================
 #              TEST

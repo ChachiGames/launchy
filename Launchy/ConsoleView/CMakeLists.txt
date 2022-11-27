@@ -7,11 +7,12 @@ set(target_sources
 )
 list(TRANSFORM target_sources PREPEND "src/")
 find_package(fmt REQUIRED)
+find_package(ftxui CONFIG REQUIRED)
 
 add_executable(${PROJECT_NAME} ${target_sources})
 
 
-target_link_libraries(${PROJECT_NAME} PRIVATE Controller fmt::fmt)
+target_link_libraries(${PROJECT_NAME} PRIVATE Controller fmt::fmt ftxui::dom ftxui::screen ftxui::component)
 
 #=================================
 #              TEST

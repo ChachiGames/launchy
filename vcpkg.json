@@ -1,8 +1,11 @@
 {
     "name": "launchy",
     "version-string": "0.0.0",
-    "dependencies": [
-      "catch2",
-      "fmt"
-    ]
+  "dependencies": [
+    "catch2",
+    "fmt",
+    "nlohmann-json",
+    "cpr",
+    "ftxui"
+  ]
 }
